@@ -1,0 +1,35 @@
+name: HZZ_analysis
+services:
+    python_write:
+      build: ./python_write
+      command: python3 test.py
+      volumes:
+        - storage:/storage
+      image: python_write
+
+    python_read:
+      build: ./python_read
+      command: python3 test.py
+      volumes:
+        - storage:/storage
+      image: python_read
+      deploy:
+        replicas: 4
+      depends_on:
+         python_write:
+           condition: service_completed_successfully
+
+    python_finish:
+      build: ./python_finish
+      command: python3 test_finish.py
+      volumes:
+        - storage:/storage
+      image: python_finish
+      depends_on:
+         python_read:
+           condition: service_completed_successfully
+      
+volumes:
+    storage:  
+       name: storage
+
