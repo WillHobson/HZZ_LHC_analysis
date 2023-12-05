@@ -1,6 +1,13 @@
+#specify version 3 so is compatible with docker stack deploy
 version: '3'
+
+#name of program
 name: HZZ_analysis
+
+#define different services
 services:
+
+    #The initialisation container
     python_write:
       build: ./python_write
       command: python3 test.py
@@ -8,7 +15,8 @@ services:
         - storage:/storage
       image: python_write
       
-
+    #The analysis containers:
+    #Declare multiple replicas for distributed implementation
     python_read:
       build: ./python_read
       command: python3 test.py
@@ -17,23 +25,22 @@ services:
 
       image: python_read
       deploy:
-        replicas: 5
-      depends_on:
-         python_write:
-           condition: service_completed_successfully
-
+        mode: replicated
+        replicas: 4
+      depends_on:      
+         - python_write
+          
+    #output container
     python_finish:
       build: ./python_finish
       command: python3 test_finish.py 4
       volumes:
          - storage:/storage
-
       image: python_finish
       depends_on:
-         python_read:
-           condition: service_completed_successfully
-    
+         - python_read
         
+#declare a volume to use.  
 volumes:
     storage:
 
