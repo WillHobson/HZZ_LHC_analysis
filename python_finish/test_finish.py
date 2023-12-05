@@ -9,6 +9,7 @@ from matplotlib.ticker import AutoMinorLocator # for minor ticks
 import sys
 import os
 
+#function to check how many analysed data files are in volume
 def check_file_count():
     files = []
     for file in os.listdir('storage/'):
@@ -18,14 +19,19 @@ def check_file_count():
 
 
 def main():
+    #command line arguement telling container how many analysed files to expect
     chunks = int(sys.argv[1])
-    print(f'chunks = {chunks}')
+
     while True:
+        #check how many files have been analysed
         file_count = check_file_count()
+        #if all files have been analysed proceed with plotting
         if file_count >= chunks:
             sys.path.insert(1,'/storage')
             print(f"There are {file_count} files. Continuing with the rest of the code.")
             files = []
+
+            #read in all analysed data files
             for file in os.listdir('storage/'):
                 if file.startswith('a'):
                     files.append(file)
@@ -33,12 +39,14 @@ def main():
             import awkward as ak
             import pickle
 
+            #combine all read in data into 1 dictionary
             data_overall = {}
             for f in files:
                 with open('storage/'+str(f), 'rb') as file:
                     loaded_array = pickle.load(file)
                     data_overall[list(loaded_array.keys())[0]] = list(loaded_array.values())[0]
 
+            #proceed with plotting
             data = data_overall
             #print(rf'data_overall keys are {data_overall.keys())[0]}')
             MeV = 0.001
