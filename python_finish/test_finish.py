@@ -9,10 +9,6 @@ from matplotlib.ticker import AutoMinorLocator # for minor ticks
 import sys
 import os
 
-
-
-
-
 def check_file_count():
     files = []
     for file in os.listdir('storage/'):
@@ -21,11 +17,12 @@ def check_file_count():
     return len(files)
 
 
-
 def main():
+    chunks = int(sys.argv[1])
+    print(f'chunks = {chunks}')
     while True:
         file_count = check_file_count()
-        if file_count >= 4:
+        if file_count >= chunks:
             sys.path.insert(1,'/storage')
             print(f"There are {file_count} files. Continuing with the rest of the code.")
             files = []
@@ -191,8 +188,8 @@ def main():
             # draw the legend
             main_axes.legend( frameon=False ) # no box around the legend
             plt.savefig('storage/finaloutput.png')
+
             
-            break
         else:
             print(f"There are only {file_count} files. Waiting...")
             time.sleep(5)  # Adjust the sleep duration as needed
