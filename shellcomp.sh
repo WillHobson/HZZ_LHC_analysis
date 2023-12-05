@@ -1,6 +1,7 @@
 #run the docker-compose file and build all images
 docker-compose up -d --build python_write python_read python_finish --remove-orphans
-sleep 30
+
+sleep 400
 #making a temporary container to move the final output to a local directory
 docker run --rm -v hzz_analysis_storage:/data -v $(pwd):/target busybox cp /data/finaloutput.png /target/ 
 
