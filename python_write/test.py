@@ -1,7 +1,10 @@
 import sys
 import matplotlib.pyplot as plt
+
+#adding shared volume to path
 sys.path.insert(1, '/storage')
 
+#dictionary which allows analysis to read in each file by name
 samples = {
 
     'data': {
@@ -27,17 +30,13 @@ samples = {
 
 }
 
-#print(dict(list(samples.items())[1: 2]))
-
-##fname = 'storage/generated.py'
-#data = dict(list(samples.items())[1: 2]) 
-
-#with open(fname, 'w') as f:
-    #f.write('data = {}'.format(data))
-
+#iterate through samples keys
 for i in range(len(list(samples.items()))):
+    #make a file to store each value and key
     fname = 'storage/generated'+str(i)+'.py'
+    #slice the dictionary for relevant part
     data = dict(list(samples.items())[i: i+1]) 
+    #write to file in shared directory
     with open(fname, 'w') as f:
         f.write('data = {}'.format(data))
 #
