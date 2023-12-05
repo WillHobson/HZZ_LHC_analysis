@@ -11,6 +11,14 @@ import infofile
 import os
 import pickle
 
+#function that checks how many files to analyse there are in volume
+def check_file_count():
+    files = []
+    for file in os.listdir('storage/'):
+        if file.startswith('generated'):
+            files.append(file)
+    return len(files)
+
 #add path to retrieve files from volume
 sys.path.insert(1,'/storage')
 
@@ -20,16 +28,12 @@ for file in os.listdir('storage/'):
     if file.startswith('generated'):
         files.append(file)
 
-def check_file_count():
-    files = []
-    for file in os.listdir('storage/'):
-        if file.startswith('generated'):
-            files.append(file)
-    return len(files)
+
 
 #if there exists data, proceed with analysing
 while check_file_count()>0:
 
+    #find all files for analysing
     files = []
     for file in os.listdir('storage/'):
         if file.startswith('generated'):
@@ -63,7 +67,7 @@ while check_file_count()>0:
     #lumi = 4.7 # fb-1 # data_D only
     lumi = 10 # fb-1 # data_A,data_B,data_C,data_D
 
-    fraction = 0.1 # reduce this is if you want the code to run quicker
+    fraction = 0.5 # reduce this is if you want the code to run quicker
                                                                                                                                     
     #tuple_path = "Input/4lep/" # local 
     tuple_path = "https://atlas-opendata.web.cern.ch/atlas-opendata/samples/2020/4lep/" # web address
