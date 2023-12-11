@@ -1,11 +1,18 @@
 #run the docker-compose file and build all images
 docker-compose up -d --build python_write python_read python_finish --remove-orphans
 
-#replace this withi logic to check if finaloutput.png exists in volume
-sleep 100
 #making a temporary container to move the final output to a local directory
-docker run --rm -v hzz_analysis_storage:/data -v $(pwd):/target busybox cp /data/finaloutput.png /target/ 
+command_to_run="docker run --rm -v hzz_analysis_storage:/data -v $(pwd):/target busybox cp /data/finaloutput.png /target/"
+retry_interval=30
 
+#try to docker copy final output. If this fails wait 30s and try again
+while ! $command_to_run; do
+    echo "The analysis is incomplete. Waiting ${retry_interval} seconds before retrying to retrieve result..."
+    sleep ${retry_interval}
+done
+
+# Continue with the rest of the script
+echo "Command executed successfully. Continue with the rest of the script."
 
 
 #copy the final output into the web folder to be used
