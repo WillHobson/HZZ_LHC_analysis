@@ -1,0 +1,54 @@
+version: '3'
+#name: HZZ_analysis
+services:
+    python_write:
+      build: ./python_write
+      command: python3 test.py
+      volumes:
+        - storage:/storage
+      image: python_write
+      deploy:
+        mode: replicated
+        replicas: 1
+        placement:
+          constraints:
+            - node.role == manager
+      
+
+    python_read:
+      build: ./python_read
+      command: python3 test.py
+      volumes:
+        - storage:/storage
+
+      image: python_read
+      deploy:
+        mode: global
+        placement:
+          constraints:
+            - node.role == manager
+
+          
+
+    python_finish:
+      build: ./python_finish
+      command: python3 test_finish.py 4
+      volumes:
+         - storage:/storage
+
+      image: python_finish
+      deploy:
+        replicas: 1
+        placement:
+          constraints:
+            - node.role == manager
+
+        
+    
+        
+volumes:
+    storage:
+
+networks:
+  file-sharing-network:
+    driver: overlay
