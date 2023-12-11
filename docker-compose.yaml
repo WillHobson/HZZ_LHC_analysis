@@ -26,14 +26,14 @@ services:
       image: python_read
       deploy:
         mode: replicated
-        replicas: 4
+        replicas: 12
       depends_on:      
          - python_write
           
     #output container
     python_finish:
       build: ./python_finish
-      command: python3 test_finish.py 4
+      command: python3 test_finish.py 12
       volumes:
          - storage:/storage
       image: python_finish

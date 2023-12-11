@@ -162,24 +162,24 @@ while check_file_count()>0:
         
         return ak.concatenate(data_all) # return array containing events passing all cuts
 
-    def get_data_from_files():
+    def get_data_from_file(todo):
 
         data = {} # define empty dictionary to hold awkward arrays
-        for s in samples: # loop over samples
-            print('Processing '+s+' samples') # print which sample
+        for s in todo: # loop over samples
+            print(f's=={s}')
             frames = [] # define empty list to hold data
-            for val in samples[s]['list']: # loop over each file
-                if s == 'data': prefix = "Data/" # Data prefix
-                else: # MC prefix
-                    prefix = "MC/mc_"+str(infofile.infos[val]["DSID"])+"."
-                fileString = tuple_path+prefix+val+".4lep.root" # file name to open
-                temp = read_file(fileString,val) # call the function read_file defined below
-                frames.append(temp) # append array returned from read_file to list of awkward arrays
-            data[s] = ak.concatenate(frames) # dictionary entry is concatenated awkward arrays
+            if s == 'data': prefix = "Data/" # Data prefix
+            else: # MC prefix
+                    prefix = "MC/mc_"+str(infofile.infos[list(todo.values())[0]]["DSID"])+"."
+            fileString = tuple_path+prefix+list(todo.values())[0]+".4lep.root"
+            temp = read_file(fileString,list(todo.values())[0]) # call the function read_file defined below
+            frames.append(temp) # append array returned from read_file to list of awkward arrays
+            data[s] = ak.concatenate(frames)
+
         return data # return dictionary of awkward arrays
 
     start = time.time() # time at start of whole processing
-    data = get_data_from_files() # process all files
+    data = get_data_from_file(samples) # process all files
     elapsed = time.time() - start # time after whole processing
     print("Time taken: "+str(round(elapsed,1))+"s") # print total time taken to process every file
 
@@ -189,3 +189,4 @@ while check_file_count()>0:
     fname = 'storage/answer'+str(np.min(index))+'.py'
     with open(fname, 'wb') as f:
         pickle.dump(data, f)
+        

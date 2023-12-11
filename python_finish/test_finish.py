@@ -21,7 +21,7 @@ def check_file_count():
 def main():
     #command line arguement telling container how many analysed files to expect
     chunks = int(sys.argv[1])
-
+    print(f'waiting until there are {chunks} answer files')
     while True:
         #check how many files have been analysed
         file_count = check_file_count()
