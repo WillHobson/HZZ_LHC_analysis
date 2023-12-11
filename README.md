@@ -1,13 +1,15 @@
 # HZZ_LHC_analysis
 A containerised version of the HZZ analysis using LHC's open data. Implemented in Docker.
 
-To run:
+To run on a single node:
 
 git clone https://github.com/WillHobson/HZZ_LHC_analysis
 
 cd HZZ_LHC_analysis
 
 sh shellcomp.sh
+
+This proves the concept of scalibilty. A docker-compose-forswarm.yaml is included which is an adapted version of docker-compose.yaml which enables the compose file to be run as a swarm. This is executed by running sh swarm.sh. Note this is speculative and needs further development, perhaps if multiple nodes were available, this would be eaier to debug. This shows that a compose file can be run on a distributed computing system.
 
 NOTE: the commands executed in the shell script are intended for use on a linux based system 
 may need adapting for a windows machine
