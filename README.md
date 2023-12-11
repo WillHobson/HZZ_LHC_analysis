@@ -23,4 +23,4 @@ eg. output displayed at localhost:XXXXX
 copy and paste the address into a browser to see result.
 
 There should always be one write and one finish container, the analysis (read) container can be multiplied using the replicas parameter in docker compose
-(currently set to 4)
+(currently set to 12)
